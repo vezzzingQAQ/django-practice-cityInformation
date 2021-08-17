@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Template模板层</title>
+    <style>
+        ul li a{
+            margin-left: 60px;
+            text-decoration: none;
+        }
+        ul li h4{
+            margin-left: 30px;
+        }
+        ul li{
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li><h3>Template模板层</h3></li>
+            <li><h4>练习</h4></li>
+                <li><a href="{% url 'demo1' %}">1.模板语法</a></li>
+                <li><a href="{% url 'demo2' %}">2.模板继承</a></li>
+            <li><h4>实例</h4></li>
+                <li><a href="{% url 'querypage' %}">1.Ajax-城市信息级联操作</a></li>
+    </ul>
+</body>
+</html>

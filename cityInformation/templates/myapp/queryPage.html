@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>城市级联</title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .nav{
+            list-style: none;
+            width: 300px;
+            margin: 100px auto;
+        }
+
+        .nav>li{/*省份*/
+            border: 3px solid palevioletred;
+            line-height: 35px;
+            border-bottom: none;
+            background-color: rgb(181, 232, 255);
+            text-indent: 2em;
+            position: relative;
+        }
+        .nav>li:last-child{
+            border-bottom: 3px solid palevioletred;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .nav>li:first-child{
+            border-top: 3px solid palevioletred;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .nav>li>span{/*省份右箭头*/
+            background: url("static/myapp/arrow.png") no-repeat center center;
+            background-size: contain;
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            position: absolute;
+            right: 10px;
+            top: 6.5px;
+        }
+        .nav>.currentProvince>span{/*省份右箭头旋转*/
+            transform: rotate(90deg);
+        }
+
+        .nav .sub{/*城市*/
+            display: none;
+        }
+        .nav .sub>li{
+            list-style: none;
+            background-color: rgb(175, 149, 226);
+            border-bottom: 2px solid white;
+            position: relative;
+        }
+        .nav .sub>li>span{/*城市右箭头*/
+            background: url("static/myapp/arrow.png") no-repeat center center;
+            background-size: contain;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            right: 12px;
+            top: 8.5px;
+        }
+        .nav>.currentCity>span{/*省份右箭头旋转*/
+            transform: rotate(90deg);
+        }
+        .nav .sub>li:hover{
+            background-color: rgb(231, 161, 149);
+        }
+    </style>
+    <script src="static/myapp/jquery.min.js"></script>
+    <script>
+        $(function(){
+            //Ajax加载城市信息
+            /*
+            $.ajax({
+                type:"get",
+                url:"queryDistrict/3",
+                dataType:"json",
+                async:false,
+                success:function(res){
+                    alert(res);
+                },
+                error:function(xhr){
+                    alert(xhr.status);
+                }
+            })*/
+
+            //监听一级菜单点击事件
+            $(".nav>li").click(function(){
+                var htmlTemp=""
+                $.ajax({
+                    type:"get",
+                    url:"queryCity/"+$(this).attr("id"),
+                    dataType:"json",
+                    async:false,
+                    success:function(res){
+                        for(var i=0;i<res.cityData.length;i++){
+                            htmlTemp+="<li class='fia' id="+res.cityData[i].cityId+">"+res.cityData[i].cityName+"<span></span><ul class='subsub'></ul></li>";
+                        }
+                        //alert(htmlTemp)
+                    },
+                    error:function(xhr){
+                        alert(xhr.status);
+                    }
+                })
+                //展开二级菜单
+                var $sub=$(this).children(".sub");
+                $sub.html(htmlTemp);
+                $sub.slideDown(800);
+                //收起所有非当前二级菜单
+                var $siblingSub=$(this).siblings().children(".sub");
+                $siblingSub.slideUp(800);
+                //旋转箭头
+                $(this).addClass("currentProvince");
+                $(this).siblings().removeClass("currentProvince");
+            });
+        })
+    </script>
+</head>
+<body>
+    <ul class="nav">
+        {% for ob in provinceList %}
+        <li id={{ob.Id}}>{{ob.Name}}<span></span>
+            <ul class="sub">
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

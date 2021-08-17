@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板语法</title>
+    <style>
+        body{
+            margin: 0 auto;
+            line-height: 1.75;
+            padding: 4em 1em;
+            max-width: 50em;
+            font-family: Arial, 微软雅黑，"Microsoft yahei", "Hiragino Sans GB", "冬青黑体简体中文 w3", STXihei, 华文细黑, SimSun, 宋体, Heiti, 黑体, sans-serif;
+            width: 100vw;
+            background-color: rgb(255, 255, 255);
+        }
+        ul li{
+            list-style: none;
+            padding: 5px;
+        }
+        ul .be{
+            background-color: rgb(224, 224, 224);
+            display: block;
+        }
+        ul .vip{
+            background-color: rgb(224, 224, 224);
+        }
+    </style>
+</head>
+<body>
+    <h1>模板语法</h1>
+    <h4>1.模板变量输出</h4>
+    <ul>
+        <li class="be">context["name"]="Meiiing"</li>
+        <li class="fe">{{name}}</li>
+        <li class="be">context["stu"]={"name":"Vezz","age":20}</li>
+        <li class="fe">{{stu.name}},{{stu.age}}</li>
+        <li class="be">context["a"]=[10,20,30]</li>
+        <li class="fe">{{a.0}},{{a.1}},{{a.2}}</li>
+    </ul>
+    <h4>2.模板标签输出</h4>
+    <ul>
+        <li class="be">url反向解析</li>
+        <li class="fe"><a href="{% url 'index' %}">返回首页</a></li>
+        <li class="be">data=[</li>
+        <li class="be">{"name":"xinnas","sex":1,"age":40,"state":0},</li>
+        <li class="be">{"name":"huihui","sex":0,"age":12,"state":2},</li>
+        <li class="be">{"name":"derder","sex":1,"age":10,"state":1},</li>
+        <li class="be">]</li>
+        <li class="be">context["dlist"]=data</li>
+        <li>
+            <table>
+                <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>状态</th>
+                </tr>
+                {% for i in dlist %}
+                <tr>
+                    <td>{{i.name}}</td>
+                    <td>{% if i.sex == 1 %}
+                        男
+                        {% else %}
+                        女
+                        {% endif %}
+                    </td>
+                    {# 模板注释 #}
+                    {% comment %}
+                    多行注释
+                    {% endcomment %}
+                    <!--注意==前后空格-->
+                    <td>{{i.sge}}</td>
+                    <td>{% if i.state == 0 %}
+                        管理员
+                        {% elif i.state == 1 %}
+                        普通用户
+                        {% else %}
+                        <span class="vip">VIP</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </li>
+    </ul>
+    <h4>3.模板过滤器使用</h4>
+    <ul>
+        <li class="be">context["name"]="Meiiing"</li>
+        <li class="fe">全大写:{{ name|upper }}</li>
+        <li class="fe">全小写:{{ name|lower }}</li>
+        <li class="be">context["time"]=datetime.now</li>
+        <li class="fe">{{ time }}</li>
+        <li class="fe">{{ time|date:'Y-m-d' }}</li>
+        <li class="fe">{{ time|date:'Y-m-d H:i:s' }}</li>
+
+        <li class="be">context["a"]=[10,20,30]</li>
+        <li class="fe">{{ a|join:":" }}</li>
+    </ul>
+    <h4>3.模板运算</h4>
+    <ul>
+        <li class="be">context["m1"]=100</li>
+        <li class="be">context["m2"]=20</li>
+        <li class="fe">求和:{{ m1|add:m2 }}</li>
+        <li class="fe">求和:{{ m1|add:111 }}</li>
+        <li class="be">用JS算了2333</li>
+    </ul>
+</body>
+</html>

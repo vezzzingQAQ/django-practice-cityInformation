@@ -1,0 +1,11 @@
+{% extends "myapp/base.html" %}
+
+{% block subtitle %}
+Django模板继承实例
+{% endblock %}
+
+{% block mycontent %}
+假装有内容
+<a href="{% url 'index' %}">回首页</a>
+{% endblock %}
+
